@@ -2,8 +2,14 @@
 # define LIBFTPRINTF_H
 
 # include <stdarg.h>
-# include "libft.h" //this should be libft/libft.h ?
+# include <stdint.h>
+# include <stdlib.h>
+# include <unistd.h>
+# include "libft/libft.h"
 
-void	ft_printf(char *format, ...);
+int	ft_printf(char *format, ...);
+int	ft_putchar_prnt(int c, int *count_chars);
+int	ft_putstr_prnt(void *str, int *count_chars);
+int	ft_putnbr_base_prnt(int nb, int *count_chars, char *base);
 
 #endif
