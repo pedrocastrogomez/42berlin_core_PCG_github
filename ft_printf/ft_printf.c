@@ -6,36 +6,39 @@
 
 //if write returns -1 then return error?
 
-//test commit history for git show
+
+static int	ft_find(char *str, char c)
+{
+	size_t	i;
+	
+	i = 0;
+	while(str[i])
+	{
+		if (str[i] == c)
+			return (1);
+		i ++;
+	}
+	return (0);
+}
 
 int	ft_printf(char *format, ...)
 {
-	va_list	ap;
+	const char	*converter;
+	size_t	arg_c;
 	size_t	i;
-	size_t	arg_count;
+	va_list	ap;
 
-	arg_count = 0;
+	converter = "cspdiuxX";
+	arg_c = 0;
 	i = 0;
-	while format[i] //this should be function that updates *argcount and returns array of datatypes based on their %...e.g all options in cspdiuxX% but xX should be unsigned?
+	while (format[i])
 	{
-		if (format[i] == '%' && format[i + 1] != %)
-		{
-			argcount ++;
-		}
+		if (format[i] == '%' && ft_find(converter, format[i + 1]) == 1)
+			arg_c ++;
+		i ++;
 	}
-	if (arg_count == 0)
-	{
-		//write only format string but consider %%.
-		return ();//return number of characters printed.
-	}
-	va_start(ap, format);
-	arguments = ft_calloc(argcount, sizeof(void *));
-	i = 0;
-	while (i < arg_count) //this should be a function
-	{
-		arguments[i] = va_arg(ap, ft_type()); // ft_type(%?)  
-		write(1, arguments[i], ft_strlen()); //function should change to string format before passed o write .....or use directly helper functions like ft_putnbr, etc. 
-	}
-	va_end(ap);
-	//function to free each member in arguments, and the arguments array itself.
+	if (arg_c > 0)
+		va_start(ap, format);
+		
+		
 }
