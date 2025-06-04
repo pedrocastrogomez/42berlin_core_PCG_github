@@ -1,4 +1,4 @@
-#include "libftprintf.h"
+#include "ft_printf.h"
 
 int	ft_putstr_prnt(void *str, int *count_chars)
 {

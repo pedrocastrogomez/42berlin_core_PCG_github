@@ -1,4 +1,4 @@
-#include "libftprintf.h"
+#include "ft_printf.h"
 
 static int	ft_intmin(char *base, int *count_chars)
 {

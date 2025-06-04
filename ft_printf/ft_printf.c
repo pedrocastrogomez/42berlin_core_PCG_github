@@ -1,11 +1,5 @@
-#include "libftprintf.h"
+#include "ft_printf.h"
 #include <stdio.h>
-
-//printf returns the number of characters printed (
-//excluding the null byte used to end output to strings).
-//it is considered an error if mismatch between number of % and arguments.
-
-//if write returns -1 then return error?
 
 static int	ft_is_converter(char c)
 {
@@ -59,7 +53,7 @@ static void ft_convert(char converter, va_list *ap, int *count_chars)
 		*count_chars = -1;
 }
 
-int	ft_printf(char *format, ...)
+int	ft_printf(const char *format, ...)
 {
 	va_list	ap;
     int count_chars;
