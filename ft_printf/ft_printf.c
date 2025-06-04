@@ -7,7 +7,6 @@
 
 //if write returns -1 then return error?
 
-
 static int	ft_is_converter(char c)
 {
 	size_t	i;
@@ -29,7 +28,6 @@ static void ft_convert(char converter, va_list *ap, int *count_chars)
 	char	*base10;
 	char	*base16_lower;
 	char	*base16_upper;
-	uintptr_t	address;
 	int	flag;
 
     base10 = "0123456789";
@@ -39,21 +37,22 @@ static void ft_convert(char converter, va_list *ap, int *count_chars)
         flag = ft_putchar_prnt(va_arg(*ap, int), count_chars);
     else if (converter == 's')
         flag = ft_putstr_prnt(va_arg(*ap, char *), count_chars);
-    else if (converter == 'p') 
-	{ //doesn't work with current putnbr_base+prnt because uintptr is long long so need another function.
-		address = (uintptr_t)va_arg(*ap, void *);
+    else if (converter == 'p')
+	{
 		write(1, "0x", 2);
 		(*count_chars) += 2;
-        flag = ft_putnbr_base_prnt(address, count_chars, base16_lower);
+        flag = ft_putnbr_base_prnt_address((uintptr_t)va_arg(*ap, void *), count_chars, base16_lower);
 	}
     else if (converter == 'd' || converter == 'i')
         flag = ft_putnbr_base_prnt(va_arg(*ap, int), count_chars, base10);
     else if (converter == 'u')
-        flag = ft_putnbr_base_prnt(va_arg(*ap, unsigned int), count_chars, base10);
-    else if (converter == 'x')
-        flag = ft_putnbr_base_prnt(va_arg(*ap, unsigned int), count_chars, base16_lower);
-    else if (converter == 'X')
-        flag = ft_putnbr_base_prnt(va_arg(*ap, unsigned int), count_chars, base16_upper);
+    {
+        flag = ft_putnbr_base_prnt_address(va_arg(*ap, unsigned int), count_chars, base10);
+	}
+	else if (converter == 'x')
+        flag = ft_putnbr_base_prnt_address(va_arg(*ap, unsigned int), count_chars, base16_lower);
+	else if (converter == 'X')
+		flag = ft_putnbr_base_prnt_address(va_arg(*ap, unsigned int), count_chars, base16_upper);
 	else
 		flag = 0;
 	if (flag == -1)
