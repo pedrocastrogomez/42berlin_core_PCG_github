@@ -4,15 +4,13 @@ static int	ft_intmin(char *base, int *count_chars)
 {
 	if (ft_strlen(base) == 16)
 	{
-		if (write (1, "-80000000", 9) == -1)
+		if (ft_putstr_prnt("-80000000", count_chars) == -1)
 			return (-1);
-		(*count_chars) += 9;
 	}
 	if (ft_strlen(base) == 10)
 	{
-		if (write(1, "-2147483648", 11) == -1)
+		if (ft_putstr_prnt("-2147483648", count_chars) == -1)
 			return (-1);
-		(*count_chars) += 11;
 	}
 	return (0);
 }
@@ -26,9 +24,8 @@ int	ft_putnbr_base_prnt(int nb, int *count_chars, char *base)
 	}
 	if (nb < 0)
 	{
-		if (write(1, "-", 1) == -1)
+		if (ft_putchar_prnt((int) '-', count_chars) == -1)
 			return (-1);
-		(*count_chars) ++;
 		nb = -nb;
 	}
 	if ((size_t)nb >= ft_strlen(base))
@@ -38,9 +35,8 @@ int	ft_putnbr_base_prnt(int nb, int *count_chars, char *base)
 	}
 	if ((size_t)nb < ft_strlen(base))
 	{
-		if (write(1, &base[nb], 1) == -1)
+		if (ft_putchar_prnt((int)base[nb], count_chars) == -1)
 			return (-1);
-		(*count_chars) ++;
 	}
 	return (0);
 }
