@@ -28,8 +28,8 @@ $(NAME) : $(OBJS) $(LIBFT_LIB)
 	ar rcs $(NAME) $(OBJS) $(TEMP_LIBFT_OBJS)/*.o
 	rm -rf $(TEMP_LIBFT_OBJS)
 	
-%.o: %.c libftprintf.h
-	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o @
+%.o: %.c ft_printf.h
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 clean :
 		rm -f $(OBJS)
