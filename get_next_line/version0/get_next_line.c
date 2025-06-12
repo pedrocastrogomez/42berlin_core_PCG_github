@@ -6,7 +6,7 @@ char	*get_next_line(int fd)
 	char	*buffer;
 	char	*str;
 	int		bytes_read;
-	int		i;
+	size_t		i;
 
 	buffer = malloc(sizeof(char) * BUFFER_SIZE + 1);
 	if (buffer == NULL)
@@ -34,6 +34,7 @@ char	*get_next_line(int fd)
 		if (i == BUFFER_SIZE - 1 || buffer[i] == '\n')
 		{
 			str = new_str(buffer, str, i, 0);
+			printf("str = %s\n", str);
 			if (buffer[i] == '\n')
 				break;
 			free(buffer);

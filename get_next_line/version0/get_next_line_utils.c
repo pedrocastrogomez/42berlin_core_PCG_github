@@ -4,8 +4,8 @@
 char	*new_str(char *buffer, char *str, int i, int reset_byte_count)
 {
 	char		*new_str;
-	int			j;
-	int			k;
+	size_t			j;
+	size_t			k;
 	static int	byte_count = 0;
 
 	if (reset_byte_count > 0)
