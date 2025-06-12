@@ -9,5 +9,6 @@
 #endif
 
 char	*get_next_line(int fd);
+char	*new_str(char *buffer, char *str, int i, int reset_byte_count);
 
 #endif
