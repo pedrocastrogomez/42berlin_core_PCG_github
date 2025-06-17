@@ -68,12 +68,17 @@ char	*update_storage_buffer(char	*storage_buffer)
 	int		i;
 
 	position_newline = ft_strchr(storage_buffer, '\n');
+	if (position_newline == NULL)
+		return (NULL);
+	printf("update_storage_buffer: position_newline = %s\n", position_newline);
 	updated_length = ft_strlen(position_newline + 1);
+	printf("update_storage_buffer: updated_length = %zu\n", updated_length);
 	updated_storage_buffer = malloc(sizeof(char) * (updated_length + 1));
 	i = 0;
 	while ((position_newline + 1)[i])
 	{
 		updated_storage_buffer[i] = (position_newline + 1)[i];
+		printf("update_storage_buffer: updated_storage_buffer[%i] = %c\n", i, updated_storage_buffer[i]);
 		i ++;
 	}
 	updated_storage_buffer[i] = '\0';
@@ -86,17 +91,31 @@ char	*cut_newline(char *storage_buffer)
 	size_t	newline_length;
 	char	*newline;
 	int		i;
-
+	printf("cut_newline: cut_newline works and storage buffer is %s\n", storage_buffer);
+	if (storage_buffer == NULL)
+		return (NULL);
 	position_newline = ft_strchr(storage_buffer, '\n');
-	newline_length = (ft_strlen(storage_buffer) - ft_strlen(position_newline + 1));
-	newline = malloc(sizeof(char) * (newline_length + 1));
+	if (position_newline != NULL)
+	{
+		printf("cut_newline: position_newline is %s\n", position_newline);
+		newline_length = (ft_strlen(storage_buffer) - ft_strlen(position_newline + 1));
+		printf("cut_newline: newline_length_%zu = %zu - %zu\n", newline_length, ft_strlen(storage_buffer), ft_strlen(position_newline + 1));
+		newline = malloc(sizeof(char) * (newline_length + 1));
+	}
+	else if (position_newline == NULL)
+	{
+		newline = malloc(sizeof(char) * (ft_strlen(storage_buffer) + 1));
+	}
 	i = 0;
 	while (storage_buffer[i] && storage_buffer[i] != '\n')
 	{
 		newline[i] = storage_buffer[i];
 		i ++;
 	}
+	if (storage_buffer[i] == '\n')
+		newline[i++] = '\n';
 	newline[i] = '\0';
+	printf("cut_newline: newline is %s\n", newline);
 	return (newline);
 }
 
@@ -137,10 +156,14 @@ char	*read_file(char *storage_buffer, int fd)
 			free(read_buffer);
 			return (NULL);
 		}
-		printf("read_file: join_buffers is called and value stored in storage_buffer\n");
+		read_buffer[bytes_read] = '\0';
+		printf("read_file: join_buffers is called and value stored in storage_buffer. read_buffer = %s\n", read_buffer);
 		storage_buffer = join_buffers(storage_buffer, read_buffer);
 		if (ft_strchr(storage_buffer, '\n') || !storage_buffer)
 			break;
 	}
+	if (bytes_read == 0)
+		return (NULL);
+	free (read_buffer);
 	return (storage_buffer);
 }

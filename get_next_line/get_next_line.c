@@ -4,7 +4,7 @@ char	*get_next_line(int fd)
 {
 	static char	*storage_buffer;
 	char		*newline;
-	char		*updated_storage_buffer;
+	char		*temp_buffer;
 
 	if (fd == -1)
 		return (NULL);
@@ -12,6 +12,8 @@ char	*get_next_line(int fd)
 	if (storage_buffer == NULL)
 		return (NULL);
 	newline = cut_newline(storage_buffer);
-	updated_storage_buffer = update_storage_buffer(storage_buffer);
+	temp_buffer = storage_buffer;
+	storage_buffer = update_storage_buffer(storage_buffer);
+	free(temp_buffer);
 	return (newline);
 }
