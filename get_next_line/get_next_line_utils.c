@@ -70,15 +70,22 @@ char	*update_storage_buffer(char	*storage_buffer)
 	position_newline = ft_strchr(storage_buffer, '\n');
 	if (position_newline == NULL)
 		return (NULL);
-	printf("update_storage_buffer: position_newline = %s\n", position_newline);
 	updated_length = ft_strlen(position_newline + 1);
-	printf("update_storage_buffer: updated_length = %zu\n", updated_length);
+	if (updated_length == 0)
+	{
+		updated_storage_buffer = malloc(sizeof(char) * 1);
+		if (!updated_storage_buffer)
+			return(NULL);
+		updated_storage_buffer[0] = '\0';
+		return (updated_storage_buffer);
+	}
 	updated_storage_buffer = malloc(sizeof(char) * (updated_length + 1));
+	if (!updated_storage_buffer)
+		return (NULL);
 	i = 0;
 	while ((position_newline + 1)[i])
 	{
 		updated_storage_buffer[i] = (position_newline + 1)[i];
-		printf("update_storage_buffer: updated_storage_buffer[%i] = %c\n", i, updated_storage_buffer[i]);
 		i ++;
 	}
 	updated_storage_buffer[i] = '\0';
@@ -91,21 +98,21 @@ char	*cut_newline(char *storage_buffer)
 	size_t	newline_length;
 	char	*newline;
 	int		i;
-	printf("cut_newline: cut_newline works and storage buffer is %s\n", storage_buffer);
+
 	if (storage_buffer == NULL)
 		return (NULL);
 	position_newline = ft_strchr(storage_buffer, '\n');
 	if (position_newline != NULL)
 	{
-		printf("cut_newline: position_newline is %s\n", position_newline);
 		newline_length = (ft_strlen(storage_buffer) - ft_strlen(position_newline + 1));
-		printf("cut_newline: newline_length_%zu = %zu - %zu\n", newline_length, ft_strlen(storage_buffer), ft_strlen(position_newline + 1));
 		newline = malloc(sizeof(char) * (newline_length + 1));
 	}
-	else if (position_newline == NULL)
+	else
 	{
 		newline = malloc(sizeof(char) * (ft_strlen(storage_buffer) + 1));
 	}
+	if (!newline)
+		return (NULL);
 	i = 0;
 	while (storage_buffer[i] && storage_buffer[i] != '\n')
 	{
@@ -115,24 +122,32 @@ char	*cut_newline(char *storage_buffer)
 	if (storage_buffer[i] == '\n')
 		newline[i++] = '\n';
 	newline[i] = '\0';
-	printf("cut_newline: newline is %s\n", newline);
 	return (newline);
 }
 
 char	*join_buffers(char *storage_buffer, char *read_buffer)
 {
 	char	*new_storage_buffer;
+	char	*temp;
 
 	if (!storage_buffer)
 	{
-		storage_buffer = malloc(sizeof(char) * 1);
-		if (storage_buffer == NULL)
+		temp = malloc(sizeof(char) * 1);
+		if (temp == NULL)
 			return (NULL);
-		storage_buffer[0] = '\0';
+		temp[0] = '\0';
 	}
-	new_storage_buffer = ft_strjoin(storage_buffer, read_buffer);
-	printf("join_buffers: storage_buffer = %s\n", new_storage_buffer);
-	free(storage_buffer);
+	else
+	{
+		temp = storage_buffer;
+	}
+	new_storage_buffer = ft_strjoin(temp, read_buffer);
+	if (new_storage_buffer == NULL)
+	{
+		free(temp);
+		return (NULL);
+	}
+	free(temp);
 	return (new_storage_buffer);
 }
 
@@ -141,15 +156,12 @@ char	*read_file(char *storage_buffer, int fd)
 	char	*read_buffer;
 	int		bytes_read;
 
-	printf("read_file: function call works\n");
 	read_buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!read_buffer)
 	{
-		printf("read_file: !read buffer, return(NULL)\n");
 		return (NULL);
 	}
 	bytes_read = 1;
-	printf("read file: bytes_read initialized to 1\n");
 	while (bytes_read > 0)
 	{
 		bytes_read = read(fd, read_buffer, BUFFER_SIZE);
@@ -159,13 +171,20 @@ char	*read_file(char *storage_buffer, int fd)
 			return (NULL);
 		}
 		read_buffer[bytes_read] = '\0';
-		printf("read_file: join_buffers is called and value stored in storage_buffer. read_buffer = %s\n", read_buffer);
+		if (bytes_read == 0 && (storage_buffer == NULL || *storage_buffer == '\0'))
+		{
+			free(read_buffer);
+			return (NULL);
+		}
 		storage_buffer = join_buffers(storage_buffer, read_buffer);
-		if (ft_strchr(storage_buffer, '\n') || !storage_buffer)
+		if (storage_buffer == NULL)
+		{
+			free(read_buffer);
+			return (NULL);
+		}
+		if (ft_strchr(storage_buffer, '\n') || bytes_read == 0)
 			break;
 	}
 	free (read_buffer);
-	if (bytes_read == 0)
-		return (NULL);
 	return (storage_buffer);
 }
