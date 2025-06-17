@@ -121,17 +121,19 @@ char	*cut_newline(char *storage_buffer)
 
 char	*join_buffers(char *storage_buffer, char *read_buffer)
 {
-	printf("join_buffers: function call works\n");
+	char	*new_storage_buffer;
+
 	if (!storage_buffer)
 	{
-		printf("join_buffers: !storage_buffer, create empty buffer size 1\n");
 		storage_buffer = malloc(sizeof(char) * 1);
+		if (storage_buffer == NULL)
+			return (NULL);
 		storage_buffer[0] = '\0';
 	}
-	printf("join_buffers: ft_strjoin is called and value stored in storage_buffer\n");
-	storage_buffer = ft_strjoin(storage_buffer, read_buffer);
-	printf("join_buffers: storage_buffer = %s\n", storage_buffer);
-	return (storage_buffer);
+	new_storage_buffer = ft_strjoin(storage_buffer, read_buffer);
+	printf("join_buffers: storage_buffer = %s\n", new_storage_buffer);
+	free(storage_buffer);
+	return (new_storage_buffer);
 }
 
 char	*read_file(char *storage_buffer, int fd)
@@ -162,8 +164,8 @@ char	*read_file(char *storage_buffer, int fd)
 		if (ft_strchr(storage_buffer, '\n') || !storage_buffer)
 			break;
 	}
+	free (read_buffer);
 	if (bytes_read == 0)
 		return (NULL);
-	free (read_buffer);
 	return (storage_buffer);
 }
