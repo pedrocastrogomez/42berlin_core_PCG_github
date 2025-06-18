@@ -37,6 +37,8 @@ char	*get_next_line(int fd)
 	}
 	temp_buffer = storage_buffer;
 	storage_buffer = update_storage_buffer(storage_buffer);
+	if (storage_buffer && storage_buffer[0] == '\0')
+		free (storage_buffer);
 	free(temp_buffer);
 	return (newline);
 }
