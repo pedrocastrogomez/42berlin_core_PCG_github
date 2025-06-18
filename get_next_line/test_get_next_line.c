@@ -31,7 +31,7 @@ int	main(int argc, char **argv) //compile with -D BUFFER_SIZE=n
 		return (1);
 	}
 	int g = 0;
-	while (g < 10)
+	while (1)
 	{
 		printf("~~~~~~~~~~~~~~~~~~~~~this is call number %i\n", g);
 		str = get_next_line(fd);
@@ -42,6 +42,7 @@ int	main(int argc, char **argv) //compile with -D BUFFER_SIZE=n
 		}
 		printf("main: str = %s\n", str);
 		free (str);
+		str = NULL;
 		g ++;
 	}
 	close (fd);
