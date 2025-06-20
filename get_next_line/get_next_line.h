@@ -10,13 +10,15 @@
 #endif
 
 char	*get_next_line(int fd);
-char	*read_file(char *storage_buffer, int fd);
-char	*join_buffers(char *storage_buffer, char *read_buffer);
-char	*cut_line(char *storage_buffer);
-char	*update_storage(char *storage_buffer);
+char	*file_reader(char *storing_buffer, int fd);
+char	*buffer_joiner(char *storing_buffer, char *reading_buffer);
+char	*line_cutter(char *storing_buffer);
+char	*storage_updater(char *storing_buffer);
 char	*ft_strchr(const char *s, int c);
+char	*ft_substr(const char *s, unsigned int start, size_t len);
+char	*ft_strdup(const char *s);
+void	*ft_calloc(size_t nmemb, size_t size);
 char	*ft_strjoin(char const *s1, char const *s2);
 size_t	ft_strlen(const char *s);
-void	*ft_malloc(size_t nmemb, size_t size);
 
 #endif
